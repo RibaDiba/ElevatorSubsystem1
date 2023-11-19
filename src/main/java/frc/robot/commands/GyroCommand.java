@@ -5,21 +5,22 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ElevatorCommand extends CommandBase {
+public class GyroCommand extends CommandBase {
 
+  private final GyroSubsystem gyroSubsystem;
   private final ElevatorSubsystem elevatorSubsystem;
-  private final double speed;
+  private final double angle;
 
-  public ElevatorCommand(ElevatorSubsystem elevatorSubsystem, double speed) {
+  public GyroCommand(GyroSubsystem GyroSubsystem, double angle, ElevatorSubsystem elevatorSubsystem ) {
+    this.gyroSubsystem = GyroSubsystem;
     this.elevatorSubsystem = elevatorSubsystem;
-    this.speed = speed;
-    addRequirements(elevatorSubsystem);
+    this.angle = angle;
+    addRequirements(GyroSubsystem);
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
@@ -28,13 +29,18 @@ public class ElevatorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevatorSubsystem.setMotors(speed, speed);
+    // Im just going to use 90 for the prompt
+    if (angle == 90) {
+        new ElevatorCommand(elevatorSubsystem, .5);
+    }
+    else {
+        new ElevatorCommand(elevatorSubsystem, 0);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSubsystem.setMotors(0, 0);
   }
 
   // Returns true when the command should end.
